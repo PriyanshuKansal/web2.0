@@ -178,7 +178,6 @@ app.get('/pick_winner', async (req, res) => {
     })
     var winner_email = email_array[Math.floor(Math.random() * email_array.length)];
     req.session.winner_picked = true;
-    // console.log(winner);  
     return true;
 
     // Create Paypal Payment
