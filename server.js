@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-const {save_user_information, get_total_amount} = require('./models/server_db');
+const {save_user_information, get_total_amount, get_list_of_participants} = require('./models/server_db');
 const path = require('path');
 const publicPath = path.join(__dirname, './public');
 const paypal = require('paypal-rest-sdk');
@@ -25,7 +25,6 @@ paypal.configure({
     'client_secret': 'EFYXv1A1b6vgq42uxKmtAir2GxmiTYa68FVj0HZ1Jqu8soXNw92ptcivFbQ2AYDUNwbGxJJjE0oySjTx'
 })
 
-// app.post('/post_info', async (req, res) => {
 //     var email = req.body.email;
 //     var amount = req.body.amount;
 
@@ -170,6 +169,16 @@ app.get('/pick_winner', async (req, res) => {
     // Placeholder for picking the winner
     // Query to get list of all paticipants
     // Need to pick a winner
+
+    var list_of_participants = await get_list_of_participants();
+    list_of_participants = JSON.parse(JSON.stringify(list_of_participants));
+    var email_array = [];
+    list_of_participants.forEach(function(element) {
+        email_array.push(element.email);
+    })
+    var winner = email_array[Math.floor(Math.random() * email_array.length)];
+    console.log(winner);  
+    return true;
 
     // Create Paypal Payment
     var create_payment_json = {
