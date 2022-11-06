@@ -110,19 +110,19 @@ paypal.configure({
       };
     
     
-    paypal.payment.create(create_payment_json, function (error, payment) {
-        if (error) {
-        throw error;
-    } else {
-        console.log("Create Payment Response");
-        console.log(payment);
-        for(var i = 0; i< payment.links.length; i++){
-          if(payment.links[i].rel =='approval_url'){
-            return res.send(payment.links[i].href);
-          }
+        paypal.payment.create(create_payment_json, function (error, payment) {
+            if (error) {
+            throw error;
+        } else {
+            console.log("Create Payment Response");
+            console.log(payment);
+            for(var i = 0; i< payment.links.length; i++){
+            if(payment.links[i].rel =='approval_url'){
+                return res.send(payment.links[i].href);
+            }
+            }
         }
-    }
-    });
+        });
 
     
 })
@@ -178,7 +178,7 @@ app.get('/pick_winner', async (req, res) => {
     })
     var winner_email = email_array[Math.floor(Math.random() * email_array.length)];
     req.session.winner_picked = true;
-    return true;
+    // return true;
 
     // Create Paypal Payment
     var create_payment_json = {
@@ -213,16 +213,16 @@ app.get('/pick_winner', async (req, res) => {
 
     paypal.payment.create(create_payment_json, function (error, payment) {
         if (error) {
-        throw error;
-    } else {
-        console.log("Create Payment Response");
-        console.log(payment);
-        for(var i = 0; i< payment.links.length; i++){
-          if(payment.links[i].rel =='approval_url'){
-            return res.send(payment.links[i].href);
-          }
+            throw error;
+        } else {
+            console.log("Create Payment Response");
+            console.log(payment);
+            for(var i = 0; i< payment.links.length; i++){
+                if(payment.links[i].rel =='approval_url'){
+                    return res.redirect(payment.links[i].href);
+                }
+            }
         }
-    }
     });
 
 });
